@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Help Ticket Admin – Nagarmal</title>
+<meta name="theme-color" content="#1a1209" />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Jost:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--gold:#b8922a;--gold-light:#e8c96e;--gold-pale:#f7f0dc;--dark:#1a1209;--cream:#fdf8ef;--text:#3a2e1a;--muted:#7a6b52;--border:rgba(184,146,42,.25);--focus:rgba(184,146,42,.7);--white:#fff;--err:#9b2222;--ok:#1e6640}
+body{font-family:'Jost',sans-serif;background:var(--cream);min-height:100vh;padding:28px 14px 48px;font-size:15px;color:var(--text);
+  background-image:radial-gradient(ellipse at 20% 0%,rgba(184,146,42,.08),transparent 60%),radial-gradient(ellipse at 80% 100%,rgba(184,146,42,.06),transparent 60%)}
+.card{max-width:900px;margin:0 auto;background:var(--white);border:1px solid var(--border);border-radius:8px;box-shadow:0 10px 45px rgba(184,146,42,.14),0 3px 15px rgba(0,0,0,.08);overflow:hidden}
+.top-bar{height:5px;background:linear-gradient(90deg,#b8922a,#e8c96e 50%,#b8922a)}
+.header{padding:22px 26px 18px;text-align:center;border-bottom:1px solid var(--border);position:relative}
+.company{font-size:13px;font-weight:600;color:var(--gold);margin-bottom:4px}
+h1{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:700;color:var(--dark);line-height:1.15}
+.out{position:absolute;top:14px;right:16px;padding:6px 14px;font:600 12px 'Jost',sans-serif;letter-spacing:.08em;color:var(--gold);background:var(--cream);border:1px solid var(--border);border-radius:20px;cursor:pointer}
+.out:hover{background:var(--gold-pale)}
+input[type=password],input[type=search],textarea,select{width:100%;font:inherit;color:var(--text);background:var(--cream);border:1px solid var(--border);border-radius:5px;outline:none;transition:border-color .25s,box-shadow .25s}
+input[type=password],input[type=search],select{height:42px;padding:0 12px}
+textarea{padding:10px 12px;min-height:76px;resize:vertical;line-height:1.5}
+input:focus,textarea:focus,select:focus{border-color:var(--focus);background:var(--white);box-shadow:0 0 0 3px rgba(184,146,42,.12)}
+.btn{height:40px;padding:0 20px;background:var(--dark);color:var(--gold-light);border:1px solid var(--dark);border-radius:5px;font:600 13px 'Jost',sans-serif;letter-spacing:.06em;cursor:pointer;transition:background .2s}
+.btn:hover{background:#2a1f0a}
+.btn.alt{background:var(--gold-pale);color:var(--dark);border-color:var(--border)}
+.btn.alt:hover{background:#f0e6c8}
+.btn.done{background:#1e6640;border-color:#1e6640;color:#fff}
+.btn.done:hover{background:#17513a}
+.btn:disabled{opacity:.6;cursor:wait}
+.btn:focus-visible,.tab:focus-visible,.out:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+
+/* login */
+#login{padding:30px 26px 34px;max-width:360px;margin:0 auto;text-align:center}
+#login label{display:block;text-align:left;font-size:13px;font-weight:600;color:var(--gold);margin-bottom:6px}
+#login .btn{width:100%;margin-top:14px;height:44px}
+.err{margin-top:12px;padding:10px 12px;background:#fdf2f2;border:1px solid #f5b7b7;border-radius:5px;color:var(--err);font-size:14px;text-align:left}
+
+/* dashboard */
+#dash{display:none}
+.tools{padding:16px 22px 6px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.tools input{flex:1;min-width:180px}
+.tabs{padding:6px 22px 12px;display:flex;gap:8px;flex-wrap:wrap;border-bottom:1px solid var(--border)}
+.tab{display:flex;align-items:center;gap:7px;padding:7px 14px;border:1px solid var(--border);border-radius:20px;background:var(--cream);font:500 13px 'Jost',sans-serif;color:var(--text);cursor:pointer}
+.tab b{font-weight:600;font-size:12px;background:var(--gold-pale);border-radius:10px;padding:1px 8px}
+.tab.on{background:var(--gold-pale);border-color:var(--gold);font-weight:600;color:var(--dark)}
+#list{padding:16px 22px 24px;display:grid;gap:14px}
+.empty{padding:34px 10px;text-align:center;color:var(--muted)}
+.t{border:1px solid var(--border);border-radius:7px;padding:14px 16px;background:var(--white);border-left:4px solid var(--gold)}
+.t.s-done{border-left-color:#3f9a68;background:#fbfefc}
+.t.s-prog{border-left-color:#d08a1f}
+.th{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:8px}
+.tid{font-weight:600;color:var(--dark);font-size:16px}
+.dt{color:var(--muted);font-size:13px;margin-left:auto}
+.st{font-size:12px;font-weight:600;padding:3px 10px;border-radius:12px;border:1px solid var(--border);background:var(--gold-pale);color:var(--dark)}
+.s-done .st{background:#f0faf4;border-color:#9ad6b0;color:var(--ok)}
+.s-prog .st{background:#fff6e6;border-color:#f0cf8f;color:#8a5a0c}
+.who{display:flex;gap:14px;flex-wrap:wrap;align-items:center;font-weight:500;margin-bottom:8px}
+.who a{color:var(--gold);font-weight:600;text-decoration:none}
+.who a:hover{text-decoration:underline}
+.issue{white-space:pre-wrap;word-break:break-word;line-height:1.55;background:var(--cream);border-radius:5px;padding:10px 12px;margin-bottom:8px}
+.vid{display:inline-block;margin-bottom:10px;color:var(--gold);font-weight:600;text-decoration:none}
+.vid:hover{text-decoration:underline}
+.act label{display:block;font-size:12.5px;font-weight:600;color:var(--gold);margin:6px 0 5px}
+.row{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;align-items:center}
+.row select{width:auto;min-width:140px}
+.row .sp{flex:1}
+.dn{margin-top:8px;font-size:13px;color:var(--ok)}
+#toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:var(--dark);color:var(--gold-light);padding:10px 20px;border-radius:6px;font-size:14px;opacity:0;pointer-events:none;transition:opacity .25s;max-width:90vw;z-index:9}
+#toast.show{opacity:1}
+#toast.bad{background:var(--err);color:#fff}
+@media(max-width:520px){body{padding:12px 6px 36px}.tools,.tabs,#list{padding-left:12px;padding-right:12px}.dt{margin-left:0;width:100%}}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="top-bar"></div>
+  <div class="header">
+    <button class="out" id="out" hidden>Logout</button>
+    <p class="company">Nagarmal Sheonarain Private Limited</p>
+    <h1>Help Ticket – Admin</h1>
+  </div>
+
+  <form id="login">
+    <label for="pw">Admin password</label>
+    <input type="password" id="pw" autocomplete="current-password" autofocus required>
+    <button class="btn" type="submit" id="lb">Login</button>
+    <div class="err" id="le" hidden></div>
+  </form>
+
+  <div id="dash">
+    <div class="tools">
+      <input type="search" id="q" placeholder="Naam, phone, ticket no. ya issue se dhundhein">
+      <button class="btn alt" id="rf" type="button">Refresh</button>
+    </div>
+    <div class="tabs" id="tabs"></div>
+    <div id="list"></div>
+  </div>
+</div>
+<div id="toast" role="status"></div>
+
+<script>
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwmQlT4l0EgaI6lB19pqudrJS2F17zhqVxcs0Fs8V7O_LsRTR9xW8Xu91nQs8RPbMhu/exec';
+const STATUS = ['Open', 'In Progress', 'Done'];
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+let pw = '', tickets = [], tab = 'Open', term = '';
+
+async function call(body) {
+  const r = await fetch(SCRIPT_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ pw, ...body }) });
+  return r.json();
+}
+
+let tt;
+function toast(t, bad) {
+  const e = $('toast'); e.textContent = t; e.className = 'show' + (bad ? ' bad' : '');
+  clearTimeout(tt); tt = setTimeout(() => e.className = '', 3200);
+}
+
+async function load(silent) {
+  const j = await call({ action: 'admin_list' });
+  if (!j.ok) { if (j.auth === false) logout(); throw new Error(j.error || 'Tickets load nahi hue'); }
+  tickets = j.tickets;
+  draw();
+  if (!silent) toast('Tickets update ho gaye');
+}
+
+function enter() {
+  $('login').style.display = 'none'; $('dash').style.display = 'block'; $('out').hidden = false;
+}
+function logout() {
+  pw = ''; sessionStorage.removeItem('hp');
+  $('dash').style.display = 'none'; $('login').style.display = 'block'; $('out').hidden = true; $('pw').value = '';
+}
+
+$('login').addEventListener('submit', async e => {
+  e.preventDefault();
+  const b = $('lb'); b.disabled = true; b.textContent = 'Check ho raha hai…'; $('le').hidden = true;
+  pw = $('pw').value;
+  try { await load(true); sessionStorage.setItem('hp', pw); enter(); }
+  catch (err) {
+    $('le').textContent = err.message === 'Failed to fetch' ? 'Server se connection nahi ho paaya' : err.message; $('le').hidden = false;
+  }
+  b.disabled = false; b.textContent = 'Login';
+});
+$('out').addEventListener('click', logout);
+$('rf').addEventListener('click', async () => { try { await load(); } catch (e) { toast(e.message, true); } });
+$('q').addEventListener('input', e => { term = e.target.value.trim().toLowerCase(); draw(); });
+
+function inTab(t) { return tab === 'All' || t.status === tab; }
+function hit(t) { return !term || [t.id, t.name, t.phone, t.issue, t.remark].some(v => String(v).toLowerCase().includes(term)); }
+
+function draw() {
+  const cnt = s => tickets.filter(t => s === 'All' || t.status === s).length;
+  $('tabs').innerHTML = ['Open', 'In Progress', 'Done', 'All'].map(s =>
+    `<button type="button" class="tab ${s === tab ? 'on' : ''}" data-tab="${s}">${s} <b>${cnt(s)}</b></button>`).join('');
+
+  const L = tickets.filter(t => inTab(t) && hit(t));
+  $('list').innerHTML = L.length ? L.map(card).join('') : '<p class="empty">Is list me koi ticket nahi hai.</p>';
+}
+
+function card(t) {
+  const cls = t.status === 'Done' ? 's-done' : t.status === 'In Progress' ? 's-prog' : '';
+  const video = /^https:\/\//.test(t.video) ? `<a class="vid" href="${esc(t.video)}" target="_blank" rel="noopener">▶ Video dekhein</a><br>` : '';
+  return `<article class="t ${cls}" data-id="${esc(t.id)}">
+    <div class="th"><span class="tid">${esc(t.id)}</span><span class="st">${esc(t.status)}</span><span class="dt">${esc(t.date)}</span></div>
+    <div class="who"><span>${esc(t.name)}</span>
+      <a href="tel:${esc(t.phone)}">📞 ${esc(t.phone)}</a>
+      <a href="https://wa.me/91${esc(t.phone)}" target="_blank" rel="noopener">WhatsApp</a></div>
+    <div class="issue">${esc(t.issue)}</div>
+    ${video}
+    <div class="act">
+      <label>Solution / Remark</label>
+      <textarea placeholder="Kya solve kiya ya kya karna hai, yahan likhein">${esc(t.remark)}</textarea>
+      <div class="row">
+        <select>${STATUS.map(s => `<option ${s === t.status ? 'selected' : ''}>${s}</option>`).join('')}</select>
+        <button type="button" class="btn alt" data-do="save">Save</button>
+        <span class="sp"></span>
+        ${t.status === 'Done' ? '' : '<button type="button" class="btn done" data-do="done">✓ Done karein</button>'}
+      </div>
+      ${t.status === 'Done' && t.doneDate ? `<p class="dn">Done: ${esc(t.doneDate)}</p>` : ''}
+    </div>
+  </article>`;
+}
+
+$('tabs').addEventListener('click', e => {
+  const b = e.target.closest('.tab'); if (!b) return;
+  tab = b.dataset.tab; draw();
+});
+
+$('list').addEventListener('click', async e => {
+  const b = e.target.closest('button[data-do]'); if (!b) return;
+  const art = b.closest('.t'), id = art.dataset.id;
+  const remark = art.querySelector('textarea').value.trim();
+  const status = b.dataset.do === 'done' ? 'Done' : art.querySelector('select').value;
+  if (status === 'Done' && !remark) { toast('Done karne se pehle Solution / Remark likhein', true); art.querySelector('textarea').focus(); return; }
+
+  art.querySelectorAll('button').forEach(x => x.disabled = true);
+  try {
+    const j = await call({ action: 'admin_update', id, status, remark });
+    if (!j.ok) throw new Error(j.error || 'Save nahi hua');
+    const i = tickets.findIndex(t => t.id === id);
+    if (i >= 0) tickets[i] = j.ticket;
+    draw();
+    toast(status === 'Done' ? id + ' Done ho gaya' : id + ' save ho gaya');
+  } catch (err) {
+    toast(err.message === 'Failed to fetch' ? 'Connection nahi ho paaya, dobara try karein' : err.message, true);
+    art.querySelectorAll('button').forEach(x => x.disabled = false);
+  }
+});
+
+// Isi tab me dobara kholne par password dobara na poochhe
+(async () => {
+  const s = sessionStorage.getItem('hp');
+  if (!s) return;
+  pw = s;
+  try { await load(true); enter(); } catch (e) { logout(); }
+})();
+</script>
+</body>
+</html>
